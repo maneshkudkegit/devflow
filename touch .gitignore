@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+
+# Env files
+.env
+*.env
+
+# Database
+*.db
+
+# Logs
+*.log
+out.txt
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+
+# Executables
+*.exe
+
+# Venv
+.venv/
