@@ -151,7 +151,9 @@ export default function Users() {
               {createMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
               {createMutation.isPending ? 'Creating…' : 'Create User'}
             </button>
-
+            <p className="text-xs text-gray-500 mt-2">
+              Tip: use a Snowflake-safe username and select a role. If you want quick help, run <code className="text-df-400">/devflow help</code> in the Command Center.
+            </p>
             <ResultBanner result={createResult} />
           </div>
         </div>
@@ -186,7 +188,9 @@ export default function Users() {
               {resetMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <KeyRound className="w-4 h-4" />}
               {resetMutation.isPending ? 'Resetting…' : 'Reset Password'}
             </button>
-
+            <p className="text-xs text-gray-500 mt-2">
+              Tip: reset passwords for any existing user. If Snowflake is not reachable, check your EC2 environment variables and network settings.
+            </p>
             <ResultBanner result={resetResult} />
           </div>
         </div>

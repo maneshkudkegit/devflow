@@ -38,11 +38,23 @@ def parse_command(raw: str) -> dict[str, Any]:
     raw = raw.strip()
     
     # Remove the /devflow prefix if present (from slash commands or manual input)
-    if raw.startswith("/devflow "):
-        raw = raw[9:].strip()
-    elif raw.startswith("/devflow"):
+    if raw.startswith("/devflow"):
         raw = raw[8:].strip()
-    
+        if not raw:
+            help_text = (
+                "🛠️ *DevFlow Commands*\n"
+                "• `/devflow help` - Show this menu\n"
+                "• `/devflow create_user username=<name> role=<role>` - Create a Snowflake user\n"
+                "• `/devflow delete_user username=<name>` - Delete a Snowflake user\n"
+                "• `/devflow reset_password username=<name>` - Reset a Snowflake user's password\n"
+                "• `/devflow list_users` - List Snowflake users\n"
+                "• `/devflow invoke_lambda [function_name]` - Invoke AWS Lambda\n"
+                "• `/devflow list_ec2` - List AWS EC2 instances\n"
+                "• `/devflow start_ec2 <instance_id>` - Start EC2 instance\n"
+                "• `/devflow stop_ec2 <instance_id>` - Stop EC2 instance\n"
+            )
+            return {"action": "help", "params": {}, "message": help_text, "raw": raw}
+
     tokens = raw.split()
     if not tokens:
         return {"action": "unknown", "params": {}, "raw": raw}
@@ -71,6 +83,7 @@ def parse_command(raw: str) -> dict[str, Any]:
             "• `/devflow list_ec2` - List AWS EC2 instances\n"
             "• `/devflow start_ec2 <instance_id>` - Start EC2 instance\n"
             "• `/devflow stop_ec2 <instance_id>` - Stop EC2 instance\n"
+            "\nType `/devflow` or `/devflow help` anytime for quick guidance."
         )
         return {"action": "help", "params": {}, "message": help_text, "raw": raw}
 

@@ -5,7 +5,7 @@
  */
 
 import { useState, useRef, useEffect } from 'react';
-import { Terminal, Send, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import { Terminal, Send, Loader2, CheckCircle2, XCircle, Info } from 'lucide-react';
 import { runCommand, type CommandResult } from '../services/api';
 
 interface HistoryEntry {
@@ -21,6 +21,14 @@ export default function CommandBox() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const historyRef = useRef<HTMLDivElement>(null);
+
+  const suggestions = [
+    '/devflow help',
+    '/devflow create_user username=john role=PUBLIC',
+    '/devflow reset_password username=john',
+    '/devflow list_users',
+    'deploy backend',
+  ];
 
   useEffect(() => {
     historyRef.current?.scrollTo({ top: historyRef.current.scrollHeight, behavior: 'smooth' });
@@ -64,10 +72,23 @@ export default function CommandBox() {
       {/* History */}
       <div ref={historyRef} className="max-h-64 overflow-y-auto p-4 space-y-3 font-mono text-sm">
         {history.length === 0 && (
-          <p className="text-gray-600 text-xs select-none">
-            Type a command like <code className="text-df-400">deploy backend</code> or{' '}
-            <code className="text-df-400">create_user john analyst</code>
-          </p>
+          <div className="space-y-3">
+            <p className="text-gray-600 text-xs select-none">
+              Start with <code className="text-df-400">/devflow help</code> to see commands and examples.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {suggestions.map((cmd) => (
+                <button
+                  key={cmd}
+                  type="button"
+                  onClick={() => setInput(cmd)}
+                  className="rounded-full border border-df-500/20 bg-df-700/40 px-3 py-1 text-[11px] text-gray-300 hover:border-df-400 hover:bg-df-600 transition"
+                >
+                  {cmd}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
         {history.map((entry, i) => (
           <div key={i} className="animate-slide-up">
@@ -114,12 +135,19 @@ export default function CommandBox() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Enter command…"
+          placeholder="Type /devflow help or deploy backend..."
           className="flex-1 bg-transparent text-sm text-gray-200 placeholder-gray-600 outline-none font-mono"
           disabled={loading}
           autoComplete="off"
           spellCheck={false}
         />
+        <button
+          type="button"
+          onClick={() => setInput('/devflow help')}
+          className="px-3 py-2 rounded-lg text-df-400 hover:text-white hover:bg-df-500/20 transition-all"
+        >
+          <Info className="w-4 h-4" />
+        </button>
         <button
           type="submit"
           disabled={loading || !input.trim()}

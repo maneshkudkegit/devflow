@@ -99,6 +99,9 @@ export default function Deployments() {
           )}
           {deployMutation.isPending ? 'Deploying…' : 'Deploy Now'}
         </button>
+        <p className="text-xs text-gray-500 mt-3">
+          Try targets like <strong>backend</strong>, <strong>frontend</strong>, <strong>infra</strong>, or <strong>full</strong>. Use branch names like <code>main</code>.
+        </p>
 
         {/* Result */}
         {lastResult && (
