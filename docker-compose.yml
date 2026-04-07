@@ -4,13 +4,12 @@ services:
   # ── PostgreSQL database ──
   db:
     image: postgres:16-alpine
+    container_name: devflow-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: devflow
       POSTGRES_PASSWORD: devflow
       POSTGRES_DB: devflow
-    ports:
-      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -22,9 +21,10 @@ services:
   # ── FastAPI backend ──
   backend:
     build: ./backend
+    container_name: devflow-backend
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "80:8000"   # 🔥 PUBLIC ACCESS HERE
     environment:
       DATABASE_URL: postgresql://devflow:devflow@db:5432/devflow
     env_file:
@@ -36,9 +36,10 @@ services:
   # ── React frontend ──
   frontend:
     build: ./frontend
+    container_name: devflow-frontend
     restart: unless-stopped
     ports:
-      - "3000:80"
+      - "3000:80"   # optional (for testing UI separately)
     depends_on:
       - backend
 
